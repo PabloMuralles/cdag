@@ -35,7 +35,7 @@ $result = $mysqli->query($sql);
                         "
                         <li class='list-group-item d-flex justify-content-between align-items-center'>
                             <p>" . $name . "</p>
-                            <a href='/details/event.php?id=" . $id . "'>
+                            <a href='/events/detail.php?id=" . $id . "'>
                                 <button type='button' class='btn btn-primary'>Detalles</button>
                             </a>
                         </li>
