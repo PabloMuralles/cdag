@@ -1,12 +1,11 @@
 <?php
 
 $host = "localhost";
-$port = 8888;
-$dbname = "cdag";
+$dbname = "cdag_db";
 $username = "root";
-$password = "root";
+$password = "";
 
-$mysqli = new mysqli($host, $username,$password, $dbname, $port);
+$mysqli = new mysqli($host, $username,$password, $dbname);
 
 if ($mysqli->connect_errno)
 {

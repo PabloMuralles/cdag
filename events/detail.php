@@ -10,7 +10,7 @@ $evento_id = $query['id'];
 $sql = "SELECT id, nombre, fecha FROM evento WHERE id = {$evento_id}";
 $result = $mysqli->query($sql);
 
-$sql = "SELECT participante.dpi_cui, participante.nombre_completo, participante.correo_electronico
+$sql = "SELECT participante.dpi_cui, participante.primer_nombre, participante.correo_electronico
         FROM participante
         INNER JOIN registro_evento ON participante.dpi_cui = registro_evento.participante_id
         WHERE registro_evento.evento_id = {$evento_id}";
