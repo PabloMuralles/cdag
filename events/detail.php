@@ -10,7 +10,7 @@ $evento_id = $query['id'];
 $sql = "SELECT id, nombre, fecha FROM evento WHERE id = {$evento_id}";
 $result = $mysqli->query($sql);
 
-$sql = "SELECT participante.dpi_cui, participante.primer_nombre, participante.correo_electronico
+$sql = "SELECT participante.dpi_cui, participante.primer_nombre, participante.segundo_nombre, participante.primer_apellido, participante.segundo_apellido, participante.correo_electronico
         FROM participante
         INNER JOIN registro_evento ON participante.dpi_cui = registro_evento.participante_id
         WHERE registro_evento.evento_id = {$evento_id}";
@@ -60,14 +60,17 @@ $participants_result = $mysqli->query($sql);
 
                         foreach ($participants as $participant) {
                             $cui = $participant['dpi_cui'];
-                            $name = $participant['nombre_completo'];
+                            $first_name = $participant['primer_nombre'];
+                            $second_name = $participant['segundo_nombre'];
+                            $first_lastname = $participant['primer_apellido'];
+                            $second_lastname = $participant['segundo_apellido'];
                             $email = $participant['correo_electronico'];
 
                             echo
                             "
                             <tr>
                                 <th scope='row'>" . $cui . "</th>
-                                <td>" . $name . "</td>
+                                <td>" . $first_lastname . " " . $second_lastname  . ", " . $first_name . " " . $second_name . "</td>
                                 <td>" . $email . "</td>
                             </tr>
                             ";
