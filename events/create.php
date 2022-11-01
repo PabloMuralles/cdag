@@ -2,7 +2,7 @@
 
 $mysqli = require __DIR__ . "/../database.php";
 
-$sql = "SELECT nombre FROM tipo_evento";
+$sql = "SELECT id, nombre FROM tipo_evento";
 $result = $mysqli->query($sql);
 
 ?>
@@ -22,29 +22,29 @@ $result = $mysqli->query($sql);
         </div>
 
         <div class="container pt-3">
-            <form>
+            <form action="insert.php" method="post">
                 <div class="mb-3">
                     <label class="form-label">Nombre</label>
-                    <input class="form-control">
+                    <input class="form-control" name="name" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Fecha</label>
-                    <input class="form-control" type="date" name="" title="">
+                    <input class="form-control" type="date" name="date" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tipo de evento</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Seleccionar...</option>
+                    <select class="form-select" aria-label="Default select example" name="event_type" required>
                         <?php
                         if ($result->num_rows > 0) {
                             $events = $result->fetch_all(MYSQLI_ASSOC);
 
                             foreach ($events as $event) {
                                 $name = $event['nombre'];
+                                $event_id = $event['id'];
 
                                 echo
                                 "
-                                <option>" . $name . "</option>
+                                <option value=" . $event_id . ">" . $name . "</option>
                                 ";
                             }
                         }
