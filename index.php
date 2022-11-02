@@ -12,11 +12,11 @@
     <p>Bienvenidos al sistema de la CDAG para el control de los eventos impartidos</p>
     <p>Selecciones la opción que desea:</p>
 
-    <input type="button" value="Crear Evento" class="create_event_button"  id="btn_create_event" onClick="document.location.href=''" />
+    <input type="button" value="Crear Evento" class="create_event_button"  id="btn_create_event" onClick="document.location.href='events/create.php'" />
 
-    <input type="button" value="Eliminar Evento" class="delete_event_button" id="btn_create_event" onClick="document.location.href=''" />
+    <input type="button" value="Eliminar Evento" class="delete_event_button" id="btn_create_event" onClick="document.location.href='events/delete.php'" />
    
-    <input type="button" value="Modificar Evento" class="modify_event_button" id="btn_create_event" onClick="document.location.href=''" />
+    <input type="button" value="Modificar Evento" class="modify_event_button" id="btn_create_event" onClick="document.location.href=' '" />
 
     <input type="button" value="Lista de evento" class="list_event_button" id="btn_create_event" onClick="document.location.href='events/list.php'" />
 
