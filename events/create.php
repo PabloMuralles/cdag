@@ -22,7 +22,7 @@ $result = $mysqli->query($sql);
         </div>
 
         <div class="container pt-3">
-            <form action="insert.php" method="post">
+            <form action="" method="post">
                 <div class="mb-3">
                     <label class="form-label">Nombre</label>
                     <input class="form-control" name="name" required>
@@ -53,6 +53,23 @@ $result = $mysqli->query($sql);
                 </div>
                 <button type="submit" class="btn btn-primary">Crear</button>
             </form>
+
+            <?php
+
+            if (!empty( $_POST)){
+                $name = $_POST["name"];
+                $date = $_POST["date"];
+                $event_type = filter_input(INPUT_POST, "event_type", FILTER_VALIDATE_INT);
+
+                if(!empty($name) || !empty($date) || !empty($event_type)){
+                $sql = "INSERT INTO evento (nombre, fecha, tipo_evento_id) VALUES ('$name', '$date', $event_type)";
+                $mysqli->query($sql);
+                $result = mysqli_insert_id($mysqli);
+                header("Location: detail.php?id=" . $result);
+                }
+            }
+            ?>
+
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     </body>

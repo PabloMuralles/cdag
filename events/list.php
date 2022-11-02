@@ -39,7 +39,7 @@ $result = $mysqli->query($sql);
                             <button type='button' class='btn btn-primary'>Detalles</button>
                             </a>
                             <a href='../events/delete.php?id=" . $id . "'>
-                                <button type='button' class='btn btn-secondary'>Modificación</button>
+                                <button type='button' class='btn btn-primary'>Modificación</button>
                             </a>
                             <a href='../events/delete.php?id=" . $id . "'>
                                 <button type='button' class='btn btn-secondary'>Eliminar</button>
