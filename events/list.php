@@ -35,15 +35,11 @@ $result = $mysqli->query($sql);
                         "
                         <li class='list-group-item d-flex justify-content-between align-items-center'>
                             <p>" . $name . "</p>
-                            <a href='../events/detail.php?id=" . $id . "'>
-                            <button type='button' class='btn btn-primary'>Detalles</button>
-                            </a>
-                            <a href='../events/delete.php?id=" . $id . "'>
-                                <button type='button' class='btn btn-secondary'>Modificación</button>
-                            </a>
-                            <a href='../events/delete.php?id=" . $id . "'>
-                                <button type='button' class='btn btn-secondary'>Eliminar</button>
-                            </a>
+                            <div class='btn-group'>
+                            <a href='../events/detail.php?id=" . $id . "' class='btn btn-primary'>Detalles</a>
+                            <a href='../events/delete.php?id=" . $id . "' class='btn btn-primary'>Modificación</a>
+                            <a href='../events/delete.php?id=" . $id . "' class='btn btn-primary'>Eliminar</a>
+                            </div>
                         </li>
                         ";
                     }
