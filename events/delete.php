@@ -28,7 +28,7 @@
 <body>
     <h1>Eliminación de evento: <?php echo $event_data[1] ?></h1>
 
-    <form action="">
+    <form method="post">
 
         <div>
             <label for="nombre_evento">Nombre Evento:</label>
@@ -49,10 +49,28 @@
         </div>
 
         <h2>Seguro que desea Eliminar el evento</h2>
-        <button type="submit"  > Si</button>
-        <button type="button"> No</button>
+        <button type="submit" name="btn-si" value="si">Si</button>
+        <button type="submit" name="btn-no" value="no">No</button>
 
     </form>
+
+    <?php
+
+        if (!empty($_POST)){
+
+            if ($_POST["btn-si"] == "si"){
+
+                delete_event($evento_id);
+                header("Location: list.php");
+
+            }else{
+                header("Location: list.php");
+            }
+        }
+
+    ?>
+
+
 
  
 </body>
