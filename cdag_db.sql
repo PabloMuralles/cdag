@@ -2,8 +2,8 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 31-10-2022 a las 21:58:50
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 03-11-2022 a las 01:17:04
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -659,6 +659,7 @@ CREATE TABLE `registro_evento` (
   `evento_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
 -- --------------------------------------------------------
 
 --
@@ -785,7 +786,7 @@ ALTER TABLE `escolaridad`
 -- AUTO_INCREMENT de la tabla `evento`
 --
 ALTER TABLE `evento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `fadn_deporte`
@@ -821,7 +822,7 @@ ALTER TABLE `municipio`
 -- AUTO_INCREMENT de la tabla `registro_evento`
 --
 ALTER TABLE `registro_evento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_evento`
@@ -837,7 +838,8 @@ ALTER TABLE `tipo_evento`
 -- Filtros para la tabla `evento`
 --
 ALTER TABLE `evento`
-  ADD CONSTRAINT `evento_ibfk_1` FOREIGN KEY (`tipo_evento_id`) REFERENCES `tipo_evento` (`id`);
+  ADD CONSTRAINT `evento_ibfk_1` FOREIGN KEY (`tipo_evento_id`) REFERENCES `tipo_evento` (`id`),
+  ADD CONSTRAINT `evento_ibfk_2` FOREIGN KEY (`id`) REFERENCES `registro_evento` (`evento_id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `municipio`
@@ -861,8 +863,7 @@ ALTER TABLE `participante`
 -- Filtros para la tabla `registro_evento`
 --
 ALTER TABLE `registro_evento`
-  ADD CONSTRAINT `registro_evento_ibfk_1` FOREIGN KEY (`participante_id`) REFERENCES `participante` (`dpi_cui`),
-  ADD CONSTRAINT `registro_evento_ibfk_2` FOREIGN KEY (`evento_id`) REFERENCES `evento` (`id`);
+  ADD CONSTRAINT `registro_evento_ibfk_1` FOREIGN KEY (`participante_id`) REFERENCES `participante` (`dpi_cui`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
