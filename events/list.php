@@ -45,7 +45,7 @@ $result = $mysqli->query($sql);
                             <p>" . $name . "</p>
                             <div class='btn-group'>
                             <a href='../events/detail.php?id=" . $id . "' class='btn btn-primary'>Detalles</a>
-                            <a href='../events/delete.php?id=" . $id . "' class='btn btn-primary'>Modificación</a>
+                            <a href='../events/update.php?id=" . $id . "' class='btn btn-primary'>Editar</a>
                             <a href='../events/delete.php?id=" . $id . "' class='btn btn-primary'>Eliminar</a>
                             </div>
                         </li>
