@@ -26,31 +26,36 @@
     <title>Eliminacion</title>
 </head>
 <body>
-    <h1>Eliminación de evento: <?php echo $event_data[1] ?></h1>
+    <div class="container pt-3">
+        <h1 class="text-center">Eliminación de evento: <?php echo $event_data[1] ?></h1>
+    </div>
+     
+    <form method="post" >
+        <div class="container pt-3">
+            <div>
+                <label class="form-label" for="nombre_evento">Nombre Evento:</label>
 
-    <form method="post">
+                <input class="form-control" type="text" id="nombre_evento" name="nombre_evento" value="<?= htmlspecialchars($event_data[1] ?? "") ?>" disabled >
+            </div>
 
-        <div>
-            <label for="nombre_evento">Nombre Evento:</label>
+            <div>
+                <label for="primer_nombre" class="form-label">Tipo de Evento:</label>
 
-            <input type="text" id="nombre_evento" name="nombre_evento" value="<?= htmlspecialchars($event_data[1] ?? "") ?>" disabled >
+                <input class="form-control" type="text" id="primer_nombre" name="cui" value="<?= htmlspecialchars($name_type[5] ?? "") ?>" disabled >
+            </div>
+
+            <div>
+                <label class="form-label" for="primer_nombre">Fecha de Creación</label>
+
+                <input class="form-control" type="text" id="primer_nombre" name="cui" value="<?= htmlspecialchars($event_data[2] ?? "") ?>" disabled >
+            </div>
+
+            <h2>¿Seguro que desea Eliminar el evento?</h2>
+            <button class="btn btn-primary" type="submit" name="btn-si" value="si">Si</button>
+            <button class="btn btn-primary" type="submit" name="btn-no" value="no">No</button>
         </div>
 
-        <div>
-            <label for="primer_nombre">Tipo de Evento:</label>
-
-            <input type="text" id="primer_nombre" name="cui" value="<?= htmlspecialchars($name_type[5] ?? "") ?>" disabled >
-        </div>
-
-        <div>
-            <label for="primer_nombre">Fecha de Creación</label>
-
-            <input type="text" id="primer_nombre" name="cui" value="<?= htmlspecialchars($event_data[2] ?? "") ?>" disabled >
-        </div>
-
-        <h2>Seguro que desea Eliminar el evento</h2>
-        <button type="submit" name="btn-si" value="si">Si</button>
-        <button type="submit" name="btn-no" value="no">No</button>
+         
 
     </form>
 
@@ -72,6 +77,6 @@
 
 
 
- 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
 </html>

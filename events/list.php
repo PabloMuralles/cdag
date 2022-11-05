@@ -17,9 +17,17 @@ $result = $mysqli->query($sql);
         <title>Eventos</title>
     </head>
     <body>
+
         <div class="container pt-3">
             <h1 class="text-center">Eventos</h1>
         </div>
+
+        <div class="container pt-3 nav justify-content-end">
+        <a href='../events/create.php' class='btn btn-primary '>Crear Evento</a>
+
+        </div>
+
+
         <div class="container mt-3">
             <?php
                 if ($result->num_rows > 0) {
