@@ -31,6 +31,9 @@ $participants_result = $mysqli->query($sql);
     <body>
         <div class="container pt-3">
             <h1 class="text-center">Detalles de evento</h1>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top: -40px;">
+                <a class="btn btn-primary " href='../events/list.php'>Ir a Eventos</a>
+            </div>
         </div>
         <div class="container mt-3">
             <?php
@@ -85,7 +88,6 @@ $participants_result = $mysqli->query($sql);
                     echo "<p class='text-center fs-3'>El evento no existe</p>";
                 }
             ?>
-            <a href="../events/list.php" class="btn btn-primary">Ir a eventos</a>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     </body>

@@ -7,7 +7,7 @@ $parts = parse_url( $url );
 parse_str( $parts['query'], $query );
 $evento_id = $query['id'];
 
-$sql = "SELECT id, nombre, fecha FROM evento WHERE id = {$evento_id}";
+$sql = "SELECT id, nombre, fecha, tipo_evento_id FROM evento WHERE id = {$evento_id}";
 $result = $mysqli->query($sql);
 $event = $result -> fetch_assoc();
 
@@ -28,6 +28,9 @@ $evetn_type_result = $mysqli->query($sql);
     <body>
         <div class="container pt-3">
             <h1 class="text-center">Creación de eventos</h1>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top: -40px;">
+                <a class="btn btn-primary " href='../events/list.php'>Ir a Eventos</a>
+            </div>
         </div>
 
         <div class="container pt-3">
@@ -38,23 +41,31 @@ $evetn_type_result = $mysqli->query($sql);
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Fecha</label>
-                    <input class="form-control" type="date" name="date" value = '<?php echo $event['fecha']; ?>' required>
+                    <input class="form-control" type="date" name="date" value = '<?php echo date('Y-m-d', strtotime($event['fecha'])); ?>' required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tipo de evento</label>
                     <select class="form-select" aria-label="Default select example" name="event_type" required>
                         <?php
-                        if ($result->num_rows > 0) {
-                            $events = $result->fetch_all(MYSQLI_ASSOC);
+                        if ($evetn_type_result->num_rows > 0) {
+                            $event_types = $evetn_type_result->fetch_all(MYSQLI_ASSOC);
 
-                            foreach ($events as $event) {
-                                $name = $event['nombre'];
-                                $event_id = $event['id'];
+                            foreach ($event_types as $event_type) {
+                                $name = $event_type['nombre'];
+                                $event_id = $event_type['id'];
 
-                                echo
-                                "
-                                <option value=" . $event_id . ">" . $name . "</option>
-                                ";
+                                if($event_id == $event['tipo_evento_id']){
+                                    echo
+                                    "
+                                    <option value=" . $event_id . " selected>" . $name . "</option>
+                                    ";
+                                }
+                                else{
+                                    echo
+                                    "
+                                    <option value=" . $event_id . ">" . $name . "</option>
+                                    ";
+                                }
                             }
                         }
                         ?>
@@ -71,10 +82,9 @@ $evetn_type_result = $mysqli->query($sql);
                 $event_type = filter_input(INPUT_POST, "event_type", FILTER_VALIDATE_INT);
 
                 if(!empty($name) || !empty($date) || !empty($event_type)){
-                $sql = "";
-                $mysqli->query($sql);
-                $result = mysqli_insert_id($mysqli);
-                //header("Location: list.php?id=" . $result);
+                    $sql = "UPDATE evento SET nombre = '$name', fecha = '$date', tipo_evento_id = $event_type WHERE id = {$evento_id}";
+                    $mysqli->query($sql);
+                    header("Location: update.php?id=" . $evento_id);
                 }
             }
             ?>
