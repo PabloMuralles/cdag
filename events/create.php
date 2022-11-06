@@ -19,6 +19,9 @@ $result = $mysqli->query($sql);
     <body>
         <div class="container pt-3">
             <h1 class="text-center">Creación de eventos</h1>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top: -50px;">
+                <a class="btn btn-primary " href='../events/list.php'>Ir a Eventos</a>
+            </div>
         </div>
 
         <div class="container pt-3">

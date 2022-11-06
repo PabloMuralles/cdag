@@ -31,7 +31,7 @@ $participants_result = $mysqli->query($sql);
     <body>
         <div class="container pt-3">
             <h1 class="text-center">Detalles de evento</h1>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top: -40px;">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top: -50px;">
                 <a class="btn btn-primary " href='../events/list.php'>Ir a Eventos</a>
             </div>
         </div>
