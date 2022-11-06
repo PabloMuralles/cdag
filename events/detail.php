@@ -7,7 +7,10 @@ $parts = parse_url( $url );
 parse_str( $parts['query'], $query );
 $evento_id = $query['id'];
 
-$sql = "SELECT id, nombre, fecha FROM evento WHERE id = {$evento_id}";
+$sql = "SELECT e.id, e.nombre as nombre_evento, e.fecha, te.nombre as nombre_tipo
+        FROM evento e
+        INNER JOIN tipo_evento te ON e.tipo_evento_id = te.id
+        WHERE e.id = {$evento_id}";
 $result = $mysqli->query($sql);
 
 $sql = "SELECT participante.dpi_cui, participante.primer_nombre, participante.segundo_nombre, participante.primer_apellido, participante.segundo_apellido, participante.correo_electronico
@@ -41,7 +44,8 @@ $participants_result = $mysqli->query($sql);
                     $event = $result->fetch_assoc();
 
                     echo "
-                        <p>Nombre: " . $event['nombre'] . "</p>
+                        <p>Nombre: " . $event['nombre_evento'] . "</p>
+                        <p>Tipo evento: " . $event['nombre_tipo'] . "</p>
                         <p>Fecha: " . $event['fecha'] . "</p>
                     ";
 
