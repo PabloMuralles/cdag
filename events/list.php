@@ -34,6 +34,7 @@ $result = $mysqli->query($sql);
 
     <div class="container mt-3">
         <?php
+        ob_start();
         if ($result->num_rows > 0) {
             $events = $result->fetch_all(MYSQLI_ASSOC);
 
