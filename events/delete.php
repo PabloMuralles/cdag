@@ -69,10 +69,14 @@
             if ($_POST["btn-si"] == "si"){
 
                 delete_event($evento_id);
-                header("Location: list.php");
+                echo "<script>
+                alert('El evento se elimino correctamente');
+                window.location.href='../events/list.php';
+                </script>";
 
             }else{
                 header("Location: list.php");
+
             }
         }
 
