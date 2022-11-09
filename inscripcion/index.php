@@ -16,21 +16,31 @@ function checkInstitucion(select) {
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-    <?php $_GET["idEvento"] = 1; ?>
+    <?php
+    include("metadata.php");
+    $metadata = new \inscripcion\metadata();
+    $evento = $metadata->getEvento($_GET["id"]);
+    if (!isset($evento)) {
+        header("Location: msg/not_found.php");
+    } else {
+        $date = new DateTime($evento["fecha"]);
+        echo "<h2> Inscripcion al evento " . $evento["nombre_evento"] . "</h2>" .
+            "<p><b> Tipo de evento: </b>" . $evento["tipo_evento"] . "</p>" .
+            "<p><b> Fecha: </b>" . $date->format("d/m/Y") . "</p>";
+    }
+    ?>
     <!-- TO DO: Agregar validacion de Token para evento, ver si se envia el ID del evento directamente-->
-    <h2>
-        Inscripcion al evento <?php echo $_GET["idEvento"]; ?>:
-    </h2>
+
     <form action="" method="GET">
         <p>Ingrese su CUI:
             <input type="text" name="CUI" value="<?php echo isset($_GET['CUI']) ? $_GET['CUI'] : '' ?>" title="CUI" placeholder="Ingrese CUI">
         </p>
-        <input type="hidden" name="idEvento" value="<?php echo isset($_GET['idEvento']) ? $_GET['idEvento'] : '' ?>">
+        <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
         <p><input type="submit" value="Validar CUI" /></p>
     </form>
 
@@ -42,36 +52,16 @@ function checkInstitucion(select) {
     <?php if (isset($_GET['CUI'])) : ?>
         <!-- Declaracion de opciones -->
         <?php
-        include("../_lib/classes/db/dbConnection.php");
-        $mysqli = new \db\dbConnection();
         $opcioneSexo = array(
             'Hombre' => 'Hombre',
             'Mujer' => 'Mujer'
         );
-        $opcionesFADN = array(
-            '1' => 'Deporte Adaptado',
-            '2' => 'Federación Deportiva Nacional de Ajedrez'
-        );
-        $opcionesDepartamento = array(
-            '1' => 'Alta Verapaz',
-            '2' => 'Baja Verapaz'
-        );
-        $opcionesInstitucion = array(
-            '1' => 'CDAG',
-            '2' => 'COG',
-            '3' => 'Instituciones Afines'
-        );
-        $opcionesGrupoObjetivo = array(
-            '1' => 'Árbitro',
-            '2' => 'Asesor',
-            '3' => 'Asistente Técnico'
-        );
-        $opcionesEscolaridad = $mysqli->getEscolaridad();
-        $opcionesIdentidadCultural = array(
-            '1' => 'Ladino/mestizo',
-            '2' => 'Maya',
-            '3' => 'Xinca'
-        )
+        $opcionesFADN = $metadata->getFadn_deporte();
+        $opcionesDepartamento = $metadata->getDepartamento();
+        $opcionesInstitucion = $metadata->getInstitucion();
+        $opcionesGrupoObjetivo = $metadata->getGrupo_objetivo();
+        $opcionesEscolaridad = $metadata->getEscolaridad();
+        $opcionesIdentidadCultural = $metadata->getIdentidad_cultural();
         ?>
 
         <form action="" method="POST">
@@ -172,6 +162,35 @@ function checkInstitucion(select) {
             <input type="submit" name="accion" value="Guardar Cambios">
             <input type="submit" name="accion" value="Inscribirse">
         </form>
+        <?php
+        if (!empty($_POST) && isset($_POST["accion"])) {
+            if ($_POST["accion"] == "Inscribirse") {
+                // Inscripcion
+                $name = $_POST["name"];
+                $date = $_POST["date"];
+                $event_type = filter_input(INPUT_POST, "event_type", FILTER_VALIDATE_INT);
+
+                if (!empty($name) || !empty($date) || !empty($event_type)) {
+                    $sql = "INSERT INTO evento (nombre, fecha, tipo_evento_id) VALUES ('$name', '$date', $event_type)";
+                    $mysqli->query($sql);
+                    $result = mysqli_insert_id($mysqli);
+                    header("Location: detail.php?id=" . $result);
+                }
+            } else {
+                //Guardar cambios
+                $name = $_POST["name"];
+                $date = $_POST["date"];
+                $event_type = filter_input(INPUT_POST, "event_type", FILTER_VALIDATE_INT);
+
+                if (!empty($name) || !empty($date) || !empty($event_type)) {
+                    $sql = "INSERT INTO evento (nombre, fecha, tipo_evento_id) VALUES ('$name', '$date', $event_type)";
+                    $mysqli->query($sql);
+                    $result = mysqli_insert_id($mysqli);
+                    header("Location: detail.php?id=" . $result);
+                }
+            }
+        }
+        ?>
     <?php else : ?>
         <p> No se han encontrado datos con el CUI ingresado </p>
     <?php endif ?>
