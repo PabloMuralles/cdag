@@ -83,8 +83,10 @@ function checkInstitucion(select) {
 
         $participante = $metadata->getParticipante($_GET['CUI']);
         if (!isset($participante)) {
-            echo "<p>** CUI no encontrado en nuestra base de datos, valide si el dato fue ingresado sin guiones y sin espacios **</p>";
-            echo "<p>** En caso de que el CUI este correcto, por favor llenar datos y presionar dar click en \"Guardar Cambios\" y luego dar click en \"Inscribirse\" **</p>";
+            echo "<div class='container pt-3'>";
+            echo "<p class='text-danger'>** CUI no encontrado en nuestra base de datos, valide si el dato fue ingresado sin guiones y sin espacios **</p>";
+            echo "<p class='text-danger'>** En caso de que el CUI este correcto, por favor llenar datos y presionar dar click en \"Guardar Cambios\" y luego dar click en \"Inscribirse\" **</p>";
+            echo "</div>";
         }
         ?>
 
@@ -93,27 +95,27 @@ function checkInstitucion(select) {
                 <b>
                     <p>Nombre completo:</p>
                 </b>
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Primer Nombre:</label>
                     <input class="form-control" type="text" name="p_nombre" value="<?php echo isset($participante["primer_nombre"]) ? $participante["primer_nombre"] : '' ?>" title="p_nombre" placeholder="Ingrese su Primer Nombre">
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Segundo nombre:</label>
                     <input class="form-control" type="text" name="s_nombre" value="<?php echo isset($participante["segundo_nombre"]) ? $participante["segundo_nombre"] : '' ?>" title="s_nombre" placeholder="Ingrese su Segundo Nombre">
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Primer apellido:</label>
                     <input class="form-control" type="text" name="p_apellido" value="<?php echo isset($participante["primer_apellido"]) ? $participante["primer_apellido"] : '' ?>" title="p_apellido" placeholder="Ingrese su Primer Apellido">
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Segundo apellido:</label>
                     <input class="form-control" type="text" name="s_apellido" value="<?php echo isset($participante["segundo_apellido"]) ? $participante["segundo_apellido"] : '' ?>" title="s_apellido" placeholder="Ingrese su Segundo Apellido">
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Sexo:</label>
                     <select  class="form-select" name="sexo" place>
                         <option value="sexo">Seleccione sexo</option>
@@ -123,7 +125,7 @@ function checkInstitucion(select) {
                     </select>
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Seleccione FADN o Deporte:</label>
                     <select class="form-select" name="FADN">
                         <option value="FADN">Seleccione FADN o Deporte</option>
@@ -133,7 +135,7 @@ function checkInstitucion(select) {
                     </select>
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Departamento:</label>
                     <select class="form-select" name="departamento">
                         <option value="departamento">Seleccione departamento</option>
@@ -143,7 +145,7 @@ function checkInstitucion(select) {
                     </select>
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Institución a la que pertenece:</label>
                     <select class="form-select" onchange="checkInstitucion(this)" name="institucion">
                         <option value="institucion">Seleccione institución</option>
@@ -152,13 +154,16 @@ function checkInstitucion(select) {
                         <?php endforeach; ?>
                     </select>
                 </div>
-            
-                <p id='institucionAfin' style="display: none">
-                    <input name='institucionAfin' value="<?php echo isset($participante["institucion_afin"]) ? $participante["institucion_afin"] : '' ?>" type="text" />
-                </p>
+
+                <div class="mb-3">
+                    <label class="form-label" id='institucionAfin' style="display: none">
+                        Institucion Afin:
+                        <input class="form-control" name='institucionAfin' value="<?php echo isset($participante["institucion_afin"]) ? $participante["institucion_afin"] : '' ?>" type="text" />
+                    </label>
+                </div>
                 <!-- TO DO: Agregar una validacion de que Instituciones Afines este seleccionado, sino vacio de debe de enviar -->
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Grupo Objetivo:</label>
                     <select class="form-select" name="grupoObjetivo">
                         <option value="grupoObjetivo">Seleccione grupo objetivo</option>
@@ -168,24 +173,24 @@ function checkInstitucion(select) {
                     </select>
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Correo Electrónico:</label>
                     <input class="form-control" type="text" name="correo" value="<?php echo isset($participante["correo_electronico"]) ? $participante["correo_electronico"] : '' ?>" title="correo" placeholder="Ingrese su Correo Electrónico">
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Celular:</label>
                     <input class="form-control" type="text" name="celular" value="<?php echo isset($participante["celular"]) ? $participante["celular"] : '' ?>" title="celular" placeholder="Ingrese su Celular">
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">CUI-DPI/Pasaporte -si es extrajero-:</label>
                     <input class="form-control" type="text" name="CUI" value="<?php echo isset($_GET['CUI']) ? $_GET['CUI'] : '' ?>" title="CUI">
                 </div>
 
                 <!-- TO DO: Agregar una validacion de fecha para formato que pide el excel-->
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Escolaridad:</label>
                     <select class="form-select" name="escolaridad">
                         <option value="escolaridad">Seleccione escolaridad</option>
@@ -195,7 +200,7 @@ function checkInstitucion(select) {
                     </select>
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Identidad Cultural:</label>
                     <select class="form-select" name="identidadCultural">
                         <option value="identidadCultural">Seleccione identidad cultural</option>
@@ -205,7 +210,7 @@ function checkInstitucion(select) {
                     </select>
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Municipio:</label>
                     <select class="form-select" name="municipio">
                         <option value="municipio">Seleccione identidad cultural</option>
@@ -215,7 +220,7 @@ function checkInstitucion(select) {
                      </select>
                 </div>
 
-                <div>
+                <div class="mb-3">
                     <label class="form-label">Fecha de nacimiento:</label>
                     <input class="form-control" type="date" name="fechaNacimiento" value="<?php echo isset($participante["fecha_nacimiento"]) ? $participante["fecha_nacimiento"] : '' ?>" title="fechaNacimiento">
                 </div>
