@@ -692,7 +692,8 @@ CREATE TABLE `participante` (
   `municipio_id` int(11) DEFAULT NULL,
   `fecha_nacimiento` date DEFAULT NULL,
   `identidad_cultural_id` int(11) DEFAULT NULL,
-  `escolaridad_id` int(11) DEFAULT NULL
+  `escolaridad_id` int(11) DEFAULT NULL,
+  `institucion_afin` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
