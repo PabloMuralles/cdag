@@ -119,7 +119,15 @@ class metadata
 
     public function setInscripcion($participanteId, $eventoId)
     {
-        $query = "INSERT INTO registro_evento (participante_id, evento_id) VALUES ('$participanteId', $eventoId)";
+        $query = "INSERT INTO registro_evento (participante_id, evento_id) VALUES ($participanteId, $eventoId)";
+        $this->mysqli->query($query);
+        return mysqli_insert_id($this->mysqli);
+    }
+
+    public function setParticipante($dpi_cui, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $sexo, $departamento_id, $institucion_id, $grupo_objetivo_id, $correo_electronico, $celular, $FADN_id, $municipio_id, $fecha_nacimiento, $identidad_cultural_id, $escolaridad_id)
+    {
+        $query = "INSERT INTO participante (dpi_cui, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, sexo, departamento_id, institucion_id, grupo_objetivo_id, correo_electronico, celular, FADN_id, municipio_id, fecha_nacimiento, identidad_cultural_id, escolaridad_id)
+        VALUES ($dpi_cui, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $sexo, $departamento_id, $institucion_id, $grupo_objetivo_id, $correo_electronico, $celular, $FADN_id, $municipio_id, $fecha_nacimiento, $identidad_cultural_id, $escolaridad_id)";
         $this->mysqli->query($query);
         return mysqli_insert_id($this->mysqli);
     }

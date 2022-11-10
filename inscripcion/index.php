@@ -63,7 +63,8 @@ function checkInstitucion(select) {
         $opcionesMunicipio = $metadata->getMunicipio();
 
         $participante = $metadata->getParticipante($_GET['CUI']);
-        if (!isset($participante)) {
+        $existeParticipante = isset($participante);
+        if (!$existeParticipante) {
             echo "<p>** CUI no encontrado en nuestra base de datos, valide si el dato fue ingresado sin guiones y sin espacios **</p>";
             echo "<p>** En caso de que el CUI este correcto, por favor llenar datos y presionar dar click en \"Guardar Cambios\" y luego dar click en \"Inscribirse\" **</p>";
         }
@@ -140,7 +141,7 @@ function checkInstitucion(select) {
                 <input type="text" name="celular" value="<?php echo isset($participante["celular"]) ? $participante["celular"] : '' ?>" title="celular">
             </p>
             <p>CUI-DPI/Pasaporte -si es extrajero-:
-                <input type="text" name="CUI" value="<?php echo isset($_GET['CUI']) ? $_GET['CUI'] : '' ?>" title="CUI">
+                <input type="text" name="CUI" value="<?php echo isset($_GET['CUI']) ? $_GET['CUI'] : '' ?>" title="CUI" disabled>
             </p>
             <!-- TO DO: Agregar una validacion de fecha para formato que pide el excel-->
             <p>Escolaridad:
@@ -170,45 +171,69 @@ function checkInstitucion(select) {
             <p>Fecha de nacimiento:
                 <input type="date" name="fechaNacimiento" value="<?php echo isset($participante["fecha_nacimiento"]) ? $participante["fecha_nacimiento"] : '' ?>" title="fechaNacimiento">
             </p>
-            <p> ** Si ha realizado alguna actualización en su información personal, dar click en "Guardar Cambios" **</p>
             <input type="submit" name="accion" value="Guardar Cambios">
             <input type="submit" name="accion" value="Inscribirse">
         </form>
         <?php
         if (!empty($_POST) && isset($_POST["accion"])) {
+            $participanteInscrito = $metadata->getParticipante($_GET['CUI']);
             if ($_POST["accion"] == "Inscribirse") {
-                $participanteInscrito = $metadata->getParticipante($_GET['CUI']);
                 $eventoInscrito = $metadata->getEvento($_GET["id"]);
                 if (isset($participanteInscrito) && isset($eventoInscrito)) {
                     // Inscripcion
                     $participanteId = $participanteInscrito["id"];
                     $eventoId = $eventoInscrito["id"];
                     $registroInscripcion = $metadata->getRegistro($participanteId, $eventoId);
-                    if (!empty($participanteInscrito) && !empty($eventoInscrito)) {
-                        if (!empty($registroInscripcion)) {
-                            echo "<script> alert('Ya se encuentra inscrito');
+                    if (!empty($registroInscripcion)) {
+                        echo "<script> alert('Ya se encuentra inscrito');
                                 window.location.href = 'msg/confirmacion.php';
                                 </script>";
-                        } else {
-                            $insertado = $metadata->setInscripcion($participanteId, $eventoId);
-                            if (isset($insertado)) {
-                                echo "<script> alert('Se ha inscrito correctamente');
+                    } else {
+                        $insertado = $metadata->setInscripcion($participanteId, $eventoId);
+                        if (isset($insertado)) {
+                            echo "<script> alert('Se ha inscrito correctamente');
                                     window.location.href = 'msg/confirmacion.php';
                                     </script>";
-                            }
+                        } else {
+                            echo "<script> alert('Se ha presentado un error, intente de nuevo');";
                         }
                     }
                 }
             } else {
                 //Guardar cambios
-                $name = $_POST["name"];
-                $date = $_POST["date"];
-                $event_type = filter_input(INPUT_POST, "event_type", FILTER_VALIDATE_INT);
-
-                if (!empty($name) || !empty($date) || !empty($event_type)) {
-                    $sql = "INSERT INTO evento (nombre, fecha, tipo_evento_id) VALUES ('$name', '$date', $event_type)";
-                    $mysqli->query($sql);
-                    $result = mysqli_insert_id($mysqli);
+                if (empty($participanteInscrito)) {
+                    $registroInscripcion = $metadata->getRegistro($participanteId, $eventoId);
+                    if (!empty($registroInscripcion)) {
+                        $insertado = null;
+                        /*
+                        $insertado = $metadata->setParticipante(
+                            $_POST["CUI"],
+                            $_POST["p_nombre"],
+                            $_POST["s_nombre"],
+                            $_POST["p_apellido"],
+                            $_POST["s_apellido"],
+                            $_POST["sexo"],
+                            $_POST["departamento"],
+                            $_POST["institucion"],
+                            $_POST["grupoObjetivo"]
+                        );*/
+                        if (isset($insertado)) {
+                            echo "<script> alert('Se ha inscrito correctamente');
+                                    window.location.href = 'msg/confirmacion.php';
+                                    </script>";
+                        } else {
+                            echo "<script> alert('Se ha presentado un error, intente de nuevo');";
+                        }
+                    } else {
+                        $insertado = $metadata->setInscripcion($participanteId, $eventoId);
+                        if (isset($insertado)) {
+                            echo "<script> alert('Se ha inscrito correctamente');
+                                    window.location.href = 'msg/confirmacion.php';
+                                    </script>";
+                        }
+                    }
+                } else {
+                    echo "<script> alert('El participante ya se encuentra registrado en la db');</script>";
                 }
             }
         }
