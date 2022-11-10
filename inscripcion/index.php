@@ -1,7 +1,7 @@
 <script type="text/JavaScript">
     var institucionAfin;
-    // 3 = Instituciones Afin
-    var llave = 3;
+    // 12 = Instituciones Afin
+    var llave = 12;
 function checkInstitucion(select) {
   institucionAfin = document.getElementById('institucionAfin');
   if (select.options[select.selectedIndex].value == llave) {
@@ -40,7 +40,6 @@ function checkInstitucion(select) {
         echo "</div>";
     }
     ?>
-    <!-- TO DO: Agregar validacion de Token para evento, ver si se envia el ID del evento directamente-->
 
     <form action="" method="GET">
         <div class="container pt-3">
@@ -67,7 +66,6 @@ function checkInstitucion(select) {
     </div>
 
 
-    <!-- Agregar validacion -->
     <?php if (isset($_GET['CUI'])) : ?>
         <!-- Declaracion de opciones -->
         <?php
@@ -81,6 +79,13 @@ function checkInstitucion(select) {
         $opcionesGrupoObjetivo = $metadata->getGrupo_objetivo();
         $opcionesEscolaridad = $metadata->getEscolaridad();
         $opcionesIdentidadCultural = $metadata->getIdentidad_cultural();
+        $opcionesMunicipio = $metadata->getMunicipio();
+
+        $participante = $metadata->getParticipante($_GET['CUI']);
+        if (!isset($participante)) {
+            echo "<p>** CUI no encontrado en nuestra base de datos, valide si el dato fue ingresado sin guiones y sin espacios **</p>";
+            echo "<p>** En caso de que el CUI este correcto, por favor llenar datos y presionar dar click en \"Guardar Cambios\" y luego dar click en \"Inscribirse\" **</p>";
+        }
         ?>
 
         <form action="" method="POST">
@@ -90,22 +95,22 @@ function checkInstitucion(select) {
                 </b>
                 <div>
                     <label class="form-label">Primer Nombre:</label>
-                    <input class="form-control" type="text" name="p_nombre" value="" title="p_nombre" placeholder="Ingrese su Primer Nombre">
+                    <input class="form-control" type="text" name="p_nombre" value="<?php echo isset($participante["primer_nombre"]) ? $participante["primer_nombre"] : '' ?>" title="p_nombre" placeholder="Ingrese su Primer Nombre">
                 </div>
 
                 <div>
                     <label class="form-label">Segundo nombre:</label>
-                    <input class="form-control" type="text" name="s_nombre" value="" title="s_nombre" placeholder="Ingrese su Segundo Nombre">
+                    <input class="form-control" type="text" name="s_nombre" value="<?php echo isset($participante["segundo_nombre"]) ? $participante["segundo_nombre"] : '' ?>" title="s_nombre" placeholder="Ingrese su Segundo Nombre">
                 </div>
 
                 <div>
                     <label class="form-label">Primer apellido:</label>
-                    <input class="form-control" type="text" name="p_apellido" value="" title="p_apellido" placeholder="Ingrese su Primer Apellido">
+                    <input class="form-control" type="text" name="p_apellido" value="<?php echo isset($participante["primer_apellido"]) ? $participante["primer_apellido"] : '' ?>" title="p_apellido" placeholder="Ingrese su Primer Apellido">
                 </div>
 
                 <div>
                     <label class="form-label">Segundo apellido:</label>
-                    <input class="form-control" type="text" name="s_apellido" value="" title="s_apellido" placeholder="Ingrese su Segundo Apellido">
+                    <input class="form-control" type="text" name="s_apellido" value="<?php echo isset($participante["segundo_apellido"]) ? $participante["segundo_apellido"] : '' ?>" title="s_apellido" placeholder="Ingrese su Segundo Apellido">
                 </div>
 
                 <div>
@@ -113,17 +118,17 @@ function checkInstitucion(select) {
                     <select  class="form-select" name="sexo" place>
                         <option value="sexo">Seleccione sexo</option>
                         <?php foreach ($opcioneSexo as $key => $value) : ?>
-                            <option value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                            <option <?php echo isset($participante) && $participante["sexo"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
 
                 <div>
-                    <label class="form-label">Sexo:</label>
+                    <label class="form-label">Seleccione FADN o Deporte:</label>
                     <select class="form-select" name="FADN">
                         <option value="FADN">Seleccione FADN o Deporte</option>
                         <?php foreach ($opcionesFADN as $key => $value) : ?>
-                            <option value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                            <option <?php echo isset($participante) && $participante["FADN_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -133,7 +138,7 @@ function checkInstitucion(select) {
                     <select class="form-select" name="departamento">
                         <option value="departamento">Seleccione departamento</option>
                         <?php foreach ($opcionesDepartamento as $key => $value) : ?>
-                            <option value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                            <option <?php echo isset($participante) && $participante["departamento_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -143,14 +148,13 @@ function checkInstitucion(select) {
                     <select class="form-select" onchange="checkInstitucion(this)" name="institucion">
                         <option value="institucion">Seleccione institución</option>
                         <?php foreach ($opcionesInstitucion as $key => $value) : ?>
-                            <option value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                            <option <?php echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
             
                 <p id='institucionAfin' style="display: none">
-                    Institucion Afin:
-                    <input name='institucionAfin' type="text" />
+                    <input name='institucionAfin' value="<?php echo isset($participante["institucion_afin"]) ? $participante["institucion_afin"] : '' ?>" type="text" />
                 </p>
                 <!-- TO DO: Agregar una validacion de que Instituciones Afines este seleccionado, sino vacio de debe de enviar -->
 
@@ -159,19 +163,19 @@ function checkInstitucion(select) {
                     <select class="form-select" name="grupoObjetivo">
                         <option value="grupoObjetivo">Seleccione grupo objetivo</option>
                         <?php foreach ($opcionesGrupoObjetivo as $key => $value) : ?>
-                            <option value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                            <option <?php echo isset($participante) && $participante["grupo_objetivo_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
 
                 <div>
                     <label class="form-label">Correo Electrónico:</label>
-                    <input class="form-control" type="text" name="correo" value="" title="correo" placeholder="Ingrese su Correo Electrónico">
+                    <input class="form-control" type="text" name="correo" value="<?php echo isset($participante["correo_electronico"]) ? $participante["correo_electronico"] : '' ?>" title="correo" placeholder="Ingrese su Correo Electrónico">
                 </div>
 
                 <div>
                     <label class="form-label">Celular:</label>
-                    <input class="form-control" type="text" name="celular" value="" title="celular" placeholder="Ingrese su Celular">
+                    <input class="form-control" type="text" name="celular" value="<?php echo isset($participante["celular"]) ? $participante["celular"] : '' ?>" title="celular" placeholder="Ingrese su Celular">
                 </div>
 
                 <div>
@@ -186,7 +190,7 @@ function checkInstitucion(select) {
                     <select class="form-select" name="escolaridad">
                         <option value="escolaridad">Seleccione escolaridad</option>
                         <?php foreach ($opcionesEscolaridad as $key => $value) : ?>
-                            <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                            <option value="<?php echo isset($participante) && isset($participante["escolaridad_id "]) ? $participante["escolaridad_id "] : '' ?>" value="<?php echo $key; ?>"><?php echo $value; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -196,19 +200,24 @@ function checkInstitucion(select) {
                     <select class="form-select" name="identidadCultural">
                         <option value="identidadCultural">Seleccione identidad cultural</option>
                         <?php foreach ($opcionesIdentidadCultural as $key => $value) : ?>
-                            <option value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                            <option <?php echo isset($participante) && $participante["identidad_cultural_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
 
                 <div>
                     <label class="form-label">Municipio:</label>
-                    <input class="form-control" type="text" name="municipio" value="" title="municipio">
+                    <select class="form-select" name="municipio">
+                        <option value="municipio">Seleccione identidad cultural</option>
+                        <?php foreach ($opcionesMunicipio as $key => $value) : ?>
+                            <option <?php echo isset($participante) && $participante["municipio_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                        <?php endforeach; ?>
+                     </select>
                 </div>
 
                 <div>
                     <label class="form-label">Fecha de nacimiento:</label>
-                    <input class="form-control" type="date" name="fechaNacimiento" value="2022-10-21" title="fechaNacimiento">
+                    <input class="form-control" type="date" name="fechaNacimiento" value="<?php echo isset($participante["fecha_nacimiento"]) ? $participante["fecha_nacimiento"] : '' ?>" title="fechaNacimiento">
                 </div>
             
 
@@ -224,16 +233,27 @@ function checkInstitucion(select) {
         <?php
         if (!empty($_POST) && isset($_POST["accion"])) {
             if ($_POST["accion"] == "Inscribirse") {
-                // Inscripcion
-                $name = $_POST["name"];
-                $date = $_POST["date"];
-                $event_type = filter_input(INPUT_POST, "event_type", FILTER_VALIDATE_INT);
-
-                if (!empty($name) || !empty($date) || !empty($event_type)) {
-                    $sql = "INSERT INTO evento (nombre, fecha, tipo_evento_id) VALUES ('$name', '$date', $event_type)";
-                    $mysqli->query($sql);
-                    $result = mysqli_insert_id($mysqli);
-                    header("Location: detail.php?id=" . $result);
+                $participanteInscrito = $metadata->getParticipante($_GET['CUI']);
+                $eventoInscrito = $metadata->getEvento($_GET["id"]);
+                if (isset($participanteInscrito) && isset($eventoInscrito)) {
+                    // Inscripcion
+                    $participanteId = $participanteInscrito["id"];
+                    $eventoId = $eventoInscrito["id"];
+                    $registroInscripcion = $metadata->getRegistro($participanteId, $eventoId);
+                    if (!empty($participanteInscrito) && !empty($eventoInscrito)) {
+                        if (!empty($registroInscripcion)) {
+                            echo "<script> alert('Ya se encuentra inscrito');
+                                window.location.href = 'msg/confirmacion.php';
+                                </script>";
+                        } else {
+                            $insertado = $metadata->setInscripcion($participanteId, $eventoId);
+                            if (isset($insertado)) {
+                                echo "<script> alert('Se ha inscrito correctamente');
+                                    window.location.href = 'msg/confirmacion.php';
+                                    </script>";
+                            }
+                        }
+                    }
                 }
             } else {
                 //Guardar cambios
@@ -245,7 +265,6 @@ function checkInstitucion(select) {
                     $sql = "INSERT INTO evento (nombre, fecha, tipo_evento_id) VALUES ('$name', '$date', $event_type)";
                     $mysqli->query($sql);
                     $result = mysqli_insert_id($mysqli);
-                    header("Location: detail.php?id=" . $result);
                 }
             }
         }
