@@ -17,6 +17,7 @@ function checkInstitucion(select) {
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <title>Inscripcion</title>
 </head>
 
 <body>
@@ -32,6 +33,9 @@ function checkInstitucion(select) {
         echo "<h2> Inscripcion al evento: " . $evento["nombre_evento"] . "</h2>" .
             "<p><b> Tipo de evento: </b>" . $evento["tipo_evento"] . "</p>" .
             "<p><b> Fecha: </b>" . $date->format("d/m/Y") . "</p>";
+        if (isset($_GET['CUI'])) {
+            $_GET['CUI'] = trim($_GET['CUI']);
+        }
     }
     ?>
 
@@ -75,20 +79,20 @@ function checkInstitucion(select) {
                 <p>Nombre completo:</p>
             </b>
             <p>Primer nombre:
-                <input type="text" name="p_nombre" value="<?php echo isset($participante["primer_nombre"]) ? $participante["primer_nombre"] : '' ?>" title="p_nombre">
+                <input type="text" name="p_nombre" value="<?php echo isset($participante["primer_nombre"]) ? $participante["primer_nombre"] : '' ?>" title="p_nombre" <?php echo $existeParticipante ? 'disabled' : '' ?>>
             </p>
             <p>Segundo nombre:
-                <input type="text" name="s_nombre" value="<?php echo isset($participante["segundo_nombre"]) ? $participante["segundo_nombre"] : '' ?>" title="s_nombre">
+                <input type="text" name="s_nombre" value="<?php echo isset($participante["segundo_nombre"]) ? $participante["segundo_nombre"] : '' ?>" title="s_nombre" <?php echo $existeParticipante ? 'disabled' : '' ?>>
             </p>
             <p>Primer apellido:
-                <input type="text" name="p_apellido" value="<?php echo isset($participante["primer_apellido"]) ? $participante["primer_apellido"] : '' ?>" title="p_apellido">
+                <input type="text" name="p_apellido" value="<?php echo isset($participante["primer_apellido"]) ? $participante["primer_apellido"] : '' ?>" title="p_apellido" <?php echo $existeParticipante ? 'disabled' : '' ?>>
             </p>
             <p>Segundo apellido:
-                <input type="text" name="s_apellido" value="<?php echo isset($participante["segundo_apellido"]) ? $participante["segundo_apellido"] : '' ?>" title="s_apellido">
+                <input type="text" name="s_apellido" value="<?php echo isset($participante["segundo_apellido"]) ? $participante["segundo_apellido"] : '' ?>" title="s_apellido" <?php echo $existeParticipante ? 'disabled' : '' ?>>
             </p>
             <p>Sexo:
-                <select name="sexo">
-                    <option value="sexo">Seleccione sexo</option>
+                <select name="sexo" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione sexo</option>
                     <?php foreach ($opcioneSexo as $key => $value) : ?>
                         <option <?php echo isset($participante) && $participante["sexo"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?>
                         </option>
@@ -96,8 +100,8 @@ function checkInstitucion(select) {
                 </select>
             </p>
             <p>FADN o Deporte:
-                <select name="FADN">
-                    <option value="FADN">Seleccione FADN o Deporte</option>
+                <select name="FADN" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione FADN o Deporte</option>
                     <?php foreach ($opcionesFADN as $key => $value) : ?>
                         <option <?php echo isset($participante) && $participante["FADN_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?>
                         </option>
@@ -105,8 +109,8 @@ function checkInstitucion(select) {
                 </select>
             </p>
             <p>Departamento:
-                <select name="departamento">
-                    <option value="departamento">Seleccione departamento</option>
+                <select name="departamento" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione departamento</option>
                     <?php foreach ($opcionesDepartamento as $key => $value) : ?>
                         <option <?php echo isset($participante) && $participante["departamento_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?>
                         </option>
@@ -114,8 +118,8 @@ function checkInstitucion(select) {
                 </select>
             </p>
             <p>Institución a la que pertenece:
-                <select onchange="checkInstitucion(this)" name="institucion">
-                    <option value="institucion">Seleccione institución</option>
+                <select onchange="checkInstitucion(this)" name="institucion" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione institución</option>
                     <?php foreach ($opcionesInstitucion as $key => $value) : ?>
                         <option <?php echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                     <?php endforeach; ?>
@@ -123,53 +127,53 @@ function checkInstitucion(select) {
             </p>
             <p id='institucionAfin' style="display: none">
                 Institucion Afin:
-                <input name='institucionAfin' value="<?php echo isset($participante["institucion_afin"]) ? $participante["institucion_afin"] : '' ?>" type="text" />
+                <input name='institucionAfin' value="<?php echo isset($participante["institucion_afin"]) ? $participante["institucion_afin"] : '' ?>" type="text" <?php echo $existeParticipante ? 'disabled' : '' ?> />
             </p>
             <!-- TO DO: Agregar una validacion de que Instituciones Afines este seleccionado, sino vacio de debe de enviar -->
             <p>Grupo Objetivo:
-                <select name="grupoObjetivo">
-                    <option value="grupoObjetivo">Seleccione grupo objetivo</option>
+                <select name="grupoObjetivo" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione grupo objetivo</option>
                     <?php foreach ($opcionesGrupoObjetivo as $key => $value) : ?>
                         <option <?php echo isset($participante) && $participante["grupo_objetivo_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                     <?php endforeach; ?>
                 </select>
             </p>
             <p>Correo Electrónico:
-                <input type="text" name="correo" value="<?php echo isset($participante["correo_electronico"]) ? $participante["correo_electronico"] : '' ?>" title="correo">
+                <input type="text" name="correo" value="<?php echo isset($participante["correo_electronico"]) ? $participante["correo_electronico"] : '' ?>" title="correo" <?php echo $existeParticipante ? 'disabled' : '' ?>>
             </p>
             <p>Celular:
-                <input type="text" name="celular" value="<?php echo isset($participante["celular"]) ? $participante["celular"] : '' ?>" title="celular">
+                <input type="text" name="celular" value="<?php echo isset($participante["celular"]) ? $participante["celular"] : '' ?>" title="celular" <?php echo $existeParticipante ? 'disabled' : '' ?>>
             </p>
             <p>CUI-DPI/Pasaporte -si es extrajero-:
                 <input type="text" name="CUI" value="<?php echo isset($_GET['CUI']) ? $_GET['CUI'] : '' ?>" title="CUI" disabled>
             </p>
             <!-- TO DO: Agregar una validacion de fecha para formato que pide el excel-->
             <p>Escolaridad:
-                <select name="escolaridad">
-                    <option value="escolaridad">Seleccione escolaridad</option>
+                <select name="escolaridad" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione escolaridad</option>
                     <?php foreach ($opcionesEscolaridad as $key => $value) : ?>
-                        <option value="<?php echo isset($participante) && isset($participante["escolaridad_id "]) ? $participante["escolaridad_id "] : '' ?>" value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                        <option <?php echo isset($participante) && $participante["escolaridad_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                     <?php endforeach; ?>
                 </select>
             </p>
             <p>Identidad Cultural:
-                <select name="identidadCultural">
-                    <option value="identidadCultural">Seleccione identidad cultural</option>
+                <select name="identidadCultural" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione identidad cultural</option>
                     <?php foreach ($opcionesIdentidadCultural as $key => $value) : ?>
                         <option <?php echo isset($participante) && $participante["identidad_cultural_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                     <?php endforeach; ?>
                 </select>
             </p>
             <p>Municipio:
-                <select name="municipio">
-                    <option value="municipio">Seleccione identidad cultural</option>
+                <select name="municipio" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione identidad cultural</option>
                     <?php foreach ($opcionesMunicipio as $key => $value) : ?>
                         <option <?php echo isset($participante) && $participante["municipio_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                     <?php endforeach; ?>
                 </select>
             </p>
             <p>Fecha de nacimiento:
-                <input type="date" name="fechaNacimiento" value="<?php echo isset($participante["fecha_nacimiento"]) ? $participante["fecha_nacimiento"] : '' ?>" title="fechaNacimiento">
+                <input type="date" name="fechaNacimiento" value="<?php echo isset($participante["fecha_nacimiento"]) ? $participante["fecha_nacimiento"] : '' ?>" title="fechaNacimiento" <?php echo $existeParticipante ? 'disabled' : '' ?>>
             </p>
             <input type="submit" name="accion" value="Guardar Cambios">
             <input type="submit" name="accion" value="Inscribirse">
@@ -190,7 +194,7 @@ function checkInstitucion(select) {
                                 </script>";
                     } else {
                         $insertado = $metadata->setInscripcion($participanteId, $eventoId);
-                        if (isset($insertado)) {
+                        if ($insertado != 0) {
                             echo "<script> alert('Se ha inscrito correctamente');
                                     window.location.href = 'msg/confirmacion.php';
                                     </script>";
@@ -198,39 +202,45 @@ function checkInstitucion(select) {
                             echo "<script> alert('Se ha presentado un error, intente de nuevo');";
                         }
                     }
+                } else {
+                    echo "<script> alert('No se encontrado el evento y/o al participante');";
                 }
             } else {
                 //Guardar cambios
                 if (empty($participanteInscrito)) {
-                    $registroInscripcion = $metadata->getRegistro($participanteId, $eventoId);
-                    if (!empty($registroInscripcion)) {
-                        $insertado = null;
-                        /*
-                        $insertado = $metadata->setParticipante(
-                            $_POST["CUI"],
-                            $_POST["p_nombre"],
-                            $_POST["s_nombre"],
-                            $_POST["p_apellido"],
-                            $_POST["s_apellido"],
-                            $_POST["sexo"],
-                            $_POST["departamento"],
-                            $_POST["institucion"],
-                            $_POST["grupoObjetivo"]
-                        );*/
-                        if (isset($insertado)) {
-                            echo "<script> alert('Se ha inscrito correctamente');
-                                    window.location.href = 'msg/confirmacion.php';
-                                    </script>";
+                    foreach ($_POST as $key => $value) {
+                        if ($_POST[$key] === '') {
+                            $_POST[$key] = 'NULL';
+                        } else if (is_numeric($_POST[$key])) {
+                            $_POST[$key] = trim($_POST[$key]);
                         } else {
-                            echo "<script> alert('Se ha presentado un error, intente de nuevo');";
+                            $_POST[$key] = "'" . $_POST[$key] . "'";
                         }
+                    }
+                    $insertado = $metadata->setParticipante(
+                        $_GET["CUI"],
+                        $_POST["p_nombre"],
+                        $_POST["s_nombre"],
+                        $_POST["p_apellido"],
+                        $_POST["s_apellido"],
+                        $_POST["sexo"],
+                        $_POST["departamento"],
+                        $_POST["institucion"],
+                        $_POST["grupoObjetivo"],
+                        $_POST["correo"],
+                        $_POST["celular"],
+                        $_POST["FADN"],
+                        $_POST["municipio"],
+                        $_POST["fechaNacimiento"],
+                        $_POST["identidadCultural"],
+                        $_POST["escolaridad"],
+                        $_POST["institucionAfin"]
+                    );
+                    if ($insertado != 0) {
+                        echo "<script> alert('Se ha guardado los datos del participante');
+                        window.location.href = 'index.php?id=" . $_GET["id"] . "&CUI=" . $_GET["CUI"] . "';</script>";
                     } else {
-                        $insertado = $metadata->setInscripcion($participanteId, $eventoId);
-                        if (isset($insertado)) {
-                            echo "<script> alert('Se ha inscrito correctamente');
-                                    window.location.href = 'msg/confirmacion.php';
-                                    </script>";
-                        }
+                        echo "<script> alert('Se ha presentado un error, intente de nuevo');</script>";
                     }
                 } else {
                     echo "<script> alert('El participante ya se encuentra registrado en la db');</script>";
