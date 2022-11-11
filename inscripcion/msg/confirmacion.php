@@ -4,7 +4,7 @@
 
 <body>
     <div class="mainbox">
-        <div class="msg-1">
+        <div class="msg-3">
             Exitoso
         </div>
         <div class="msg-2">

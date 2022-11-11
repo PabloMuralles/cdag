@@ -28,3 +28,12 @@ body {
   top: 45%;
   width: 75%;
 }
+
+.msg-3 {
+  color: #ffffff;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11rem;
+  position: absolute;
+  left: 5%;
+  top: 8%;
+}
