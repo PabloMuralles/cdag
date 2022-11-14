@@ -35,6 +35,17 @@ class metadata
         return $row;
     }
 
+    public function getId($query)
+    {
+        $resultQuery = $this->mysqli->query($query);
+        $row = null;
+        if ($resultQuery->num_rows > 0) {
+            $row = $resultQuery->fetch_assoc();
+        }
+        $resultQuery->close();
+        return $row;
+    }
+
     public function getDepartamento()
     {
         $query = ('
@@ -117,9 +128,81 @@ class metadata
         return $this->getObjeto($query);
     }
 
+    public function getDepartamentoId($nombre)
+    {
+        $query = ('
+            SELECT d.id
+            FROM departamento AS d WHERE d.nombre = $nombre;
+        ');
+        return $this->getCatalog($query);
+    }
+
+    public function getFadnId($nombre)
+    {
+        $query = ('
+            SELECT f.id
+            FROM fadn_deporte AS f WHERE f.nombre = $nombre;
+        ');
+        return $this->getCatalog($query);
+    }
+
+    public function getGrupoObjetivoId($nombre)
+    {
+        $query = ('
+            SELECT g.id
+            FROM grupo_objetivo AS g WHERE g.nombre = $nombre;
+        ');
+        return $this->getCatalog($query);
+    }
+
+    public function getIdentidadCulturalId($nombre)
+    {
+        $query = ('
+            SELECT i.id
+            FROM identidad_cultural AS i WHERE i.nombre = $nombre;
+        ');
+        return $this->getCatalog($query);
+    }
+
+    public function getInstitucionId($nombre)
+    {
+        $query = ('
+            SELECT i.id
+            FROM institucion AS i WHERE i.nombre = $nombre;
+        ');
+        return $this->getCatalog($query);
+    }
+
+    public function getEscolaridadId($nombre)
+    {
+        $query = ('
+            SELECT e.id
+            FROM escolaridad AS e WHERE e.nombre = $nombre;
+        ');
+        return $this->getCatalog($query);
+    }
+
+    public function getMunicipioId()
+    {
+        $query = ('
+            SELECT m.id
+            FROM municipio AS m WHERE m.nombre = $nombre;
+        ');
+        return $this->getCatalog($query);
+    }
+
+
     public function setInscripcion($participanteId, $eventoId)
     {
-        $query = "INSERT INTO registro_evento (participante_id, evento_id) VALUES ('$participanteId', $eventoId)";
+        $query = "INSERT INTO registro_evento (participante_id, evento_id) VALUES ($participanteId, $eventoId)";
+        $this->mysqli->query($query);
+        return mysqli_insert_id($this->mysqli);
+    }
+
+    public function setParticipante($dpi_cui, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $sexo, $departamento_id, $institucion_id, $grupo_objetivo_id, $correo_electronico, $celular, $FADN_id, $municipio_id, $fecha_nacimiento, $identidad_cultural_id, $escolaridad_id, $institucion_afin)
+    {
+        $query = "INSERT INTO participante (dpi_cui, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, sexo, departamento_id, institucion_id, grupo_objetivo_id, correo_electronico, celular, FADN_id, municipio_id, fecha_nacimiento, identidad_cultural_id, escolaridad_id, institucion_afin)
+        VALUES ($dpi_cui, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $sexo, $departamento_id, $institucion_id, $grupo_objetivo_id, $correo_electronico, $celular, $FADN_id, $municipio_id, $fecha_nacimiento, $identidad_cultural_id, $escolaridad_id, $institucion_afin)";
         $this->mysqli->query($query);
         return mysqli_insert_id($this->mysqli);
     }

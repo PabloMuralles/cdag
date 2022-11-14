@@ -15,7 +15,7 @@ $result = $mysqli->query($sql);
 
 $sql = "SELECT participante.dpi_cui, participante.primer_nombre, participante.segundo_nombre, participante.primer_apellido, participante.segundo_apellido, participante.correo_electronico
         FROM participante
-        INNER JOIN registro_evento ON participante.dpi_cui = registro_evento.participante_id
+        INNER JOIN registro_evento ON participante.id = registro_evento.participante_id
         WHERE registro_evento.evento_id = {$evento_id}";
 
 $participants_result = $mysqli->query($sql);
@@ -44,11 +44,11 @@ $participants_result = $mysqli->query($sql);
         <?php
         if ($result->num_rows > 0) {
             $event = $result->fetch_assoc();
-
+            $date = new DateTime($event["fecha"]);
             echo "
                         <p>Nombre: " . $event['nombre_evento'] . "</p>
                         <p>Tipo evento: " . $event['nombre_tipo'] . "</p>
-                        <p>Fecha: " . $event['fecha'] . "</p>
+                        <p>Fecha: " . $date->format("d/m/Y") . "</p>
                         <p><a href='../inscripcion/index.php?id=" . $evento_id . "' class='btn btn-primary'>Pagina de inscripcion</a></p>
                     ";
 
