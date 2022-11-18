@@ -36,7 +36,7 @@
     <form method="post" >
         <div class="container pt-3">
             <div class="mb-3">
-                <label class="form-label" for="nombre_evento">Nombre Evento:</label>
+                <label class="form-label" for="nombre_evento">Nombre del Evento:</label>
 
                 <input class="form-control" type="text" id="nombre_evento" name="nombre_evento" value="<?= htmlspecialchars($event_data[1] ?? "") ?>" disabled >
             </div>

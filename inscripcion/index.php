@@ -71,7 +71,7 @@ function checkInstitucion(select) {
     </div>
 
 
-    <?php if (isset($_GET['CUI'])) : ?>
+    <?php if (isset($_GET['CUI']) && ($_GET['CUI'] != "")) : ?>
         <!-- Declaracion de opciones -->
         <?php
         $opcioneSexo = array(
@@ -244,7 +244,8 @@ function checkInstitucion(select) {
             </div>
         </form>
         <?php
-        if (!empty($_POST) && isset($_POST["accion"])) {
+        if (!empty($_POST) && isset($_POST["accion"]))
+        {
             $participanteInscrito = $metadata->getParticipante($_GET['CUI']);
             if ($_POST["accion"] == "Inscribirse") {
                 $eventoInscrito = $metadata->getEvento($_GET["id"]);
