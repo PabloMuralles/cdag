@@ -86,7 +86,8 @@ function checkInstitucion(select) {
         $opcionesIdentidadCultural = $metadata->getIdentidad_cultural();
         $opcionesMunicipio = $metadata->getMunicipio();
 
-        $participante = $metadata->getParticipante($_GET['CUI']);
+        $cuiParticipante = "'" . trim($_GET['CUI']) . "'";
+        $participante = $metadata->getParticipante($cuiParticipante);
 
         $existeParticipante = isset($participante);
         if (!$existeParticipante) {
@@ -244,8 +245,7 @@ function checkInstitucion(select) {
             </div>
         </form>
         <?php
-        if (!empty($_POST) && isset($_POST["accion"]))
-        {
+        if (!empty($_POST) && isset($_POST["accion"])) {
             $participanteInscrito = $metadata->getParticipante($_GET['CUI']);
             if ($_POST["accion"] == "Inscribirse") {
                 $eventoInscrito = $metadata->getEvento($_GET["id"]);
