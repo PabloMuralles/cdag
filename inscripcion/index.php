@@ -1,4 +1,5 @@
-<script type="text/JavaScript">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
     var institucionAfin;
     // 12 = Instituciones Afin
     var llave = 12;
@@ -11,6 +12,20 @@ function checkInstitucion(select) {
     institucionAfin.style.display = 'none';
   }
 }
+
+function checkDepartamento(val) {
+    $.ajax({
+        type: 'post',
+        url: 'fetch_municipio.php',
+        data: {
+            get_option:val
+        },
+        success: function (response){
+            document.getElementById("select_municipio").innerHTML=response;
+        }
+    });
+}
+
 </script>
 
 <html>
@@ -135,7 +150,6 @@ function checkInstitucion(select) {
                     </select>
                 </div>
 
-
                 <div class="mb-3">
                     <label class="form-label">Seleccione FADN o Deporte:</label><span class="text-danger"> * </span>
                     <select class="form-select" name="FADN" <?php echo $existeParticipante ? 'disabled' : '' ?>>
@@ -149,12 +163,24 @@ function checkInstitucion(select) {
 
                 <div class="mb-3">
                     <label class="form-label">Departamento:</label>
-                    <select class="form-select" name="departamento" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <select class="form-select" onchange="checkDepartamento(this.value);" id = "id_departamento" name="departamento" <?php echo $existeParticipante ? 'disabled' : '' ?>>
                         <option value=''>Seleccione departamento</option>
                         <?php foreach ($opcionesDepartamento as $key => $value) : ?>
                             <option <?php echo isset($participante) && $participante["departamento_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?>
                             </option>
                         <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Municipio:</label>
+                    <select class="form-select" id = "select_municipio" name="municipio" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <option value=''>Seleccione identidad cultural</option>
+                    <?php if (isset($participante) && isset($participante["municipio_id"])) : ?>
+                        <?php foreach ($opcionesMunicipio as $key => $value) : ?>
+                            <option <?php echo isset($participante) && $participante["municipio_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                        <?php endforeach; ?>
+                    <?php endif ?>
                     </select>
                 </div>
 
@@ -219,17 +245,6 @@ function checkInstitucion(select) {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Municipio:</label>
-                    <select class="form-select" name="municipio" <?php echo $existeParticipante ? 'disabled' : '' ?>>
-                        <option value=''>Seleccione identidad cultural</option>
-                        <?php foreach ($opcionesMunicipio as $key => $value) : ?>
-                            <option <?php echo isset($participante) && $participante["municipio_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
 
                 <div class="mb-3">
                     <label class="form-label">Fecha de nacimiento:</label>
