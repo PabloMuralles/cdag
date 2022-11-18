@@ -1,5 +1,6 @@
 <head>
-    <link href="msg.css" type="text/css" rel="stylesheet">'
+    <link href="msg.css" type="text/css" rel="stylesheet">
+    <title>Error</title>
 </head>
 
 <body>
