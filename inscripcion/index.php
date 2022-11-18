@@ -86,7 +86,7 @@ function checkDepartamento(val) {
     </div>
 
 
-    <?php if (isset($_GET['CUI'])) : ?>
+    <?php if (isset($_GET['CUI']) && ($_GET['CUI'] != "")) : ?>
         <!-- Declaracion de opciones -->
         <?php
         $opcioneSexo = array(
@@ -101,7 +101,8 @@ function checkDepartamento(val) {
         $opcionesIdentidadCultural = $metadata->getIdentidad_cultural();
         $opcionesMunicipio = $metadata->getMunicipio();
 
-        $participante = $metadata->getParticipante($_GET['CUI']);
+        $cuiParticipante = "'" . trim($_GET['CUI']) . "'";
+        $participante = $metadata->getParticipante($cuiParticipante);
 
         $existeParticipante = isset($participante);
         if (!$existeParticipante) {
