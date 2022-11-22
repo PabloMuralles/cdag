@@ -227,12 +227,12 @@ function checkDepartamento(val) {
 
                 <div class="mb-3">
                     <label class="form-label">Correo Electrónico:</label><span class="text-danger"> * </span>
-                    <input class="form-control" type="text" name="correo" placeholder="Ingrese su Correo Electrónico" value="<?php echo isset($participante["correo_electronico"]) ? $participante["correo_electronico"] : '' ?>" title="correo" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <input class="form-control" type="email" name="correo" placeholder="Ingrese su Correo Electrónico" value="<?php echo isset($participante["correo_electronico"]) ? $participante["correo_electronico"] : '' ?>" title="correo" <?php echo $existeParticipante ? 'disabled' : '' ?>>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Celular:</label><span class="text-danger"> * </span>
-                    <input class="form-control" type="text" name="celular" placeholder="Ingrese su Celular" value="<?php echo isset($participante["celular"]) ? $participante["celular"] : '' ?>" title="celular" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <input class="form-control" type="tel" name="celular" placeholder="Ingrese su Celular" pattern="(+)?[0-9]" value="<?php echo isset($participante["celular"]) ? $participante["celular"] : '' ?>" title="celular" <?php echo $existeParticipante ? 'disabled' : '' ?>>
                 </div>
 
                 <div class="mb-3">
