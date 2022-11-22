@@ -2,15 +2,23 @@
 <script type="text/javascript">
     var institucionAfin;
     // 12 = Instituciones Afin
-    var llave = 12;
+    var llaveAfin = 12;
+
+    var varFadn;
+    // 6 = FADN
+    var llaveFadn = 6;
+
 function checkInstitucion(select) {
-  institucionAfin = document.getElementById('institucionAfin');
-  if (select.options[select.selectedIndex].value == llave) {
-    institucionAfin.style.display = 'block';
-  }
-  else {
+    institucionAfin = document.getElementById('institucionAfin');
+    varFadn = document.getElementById('idFadn');
     institucionAfin.style.display = 'none';
-  }
+    varFadn.style.display = 'none';
+    if (select.options[select.selectedIndex].value == llaveAfin) {
+        institucionAfin.style.display = 'block';
+    }
+    else if (select.options[select.selectedIndex].value == llaveFadn){
+        varFadn.style.display = 'block';
+    }
 }
 
 function checkDepartamento(val) {
@@ -152,7 +160,18 @@ function checkDepartamento(val) {
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Seleccione FADN o Deporte:</label><span class="text-danger"> * </span>
+                    <label class="form-label">Institución a la que pertenece:</label><span class="text-danger"> * </span>
+                    <select class="form-select" onchange="checkInstitucion(this)" name="institucion" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                        <option value=''>Seleccione institución</option>
+                        <?php foreach ($opcionesInstitucion as $key => $value) : ?>
+                            <option <?php echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" id='idFadn' style="display: none">
+                    Seleccione FADN o Deporte:
                     <select class="form-select" name="FADN" <?php echo $existeParticipante ? 'disabled' : '' ?>>
                         <option value=''>Seleccione FADN o Deporte</option>
                         <?php foreach ($opcionesFADN as $key => $value) : ?>
@@ -160,6 +179,14 @@ function checkDepartamento(val) {
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" id='institucionAfin' style="display: none">
+                        Institucion Afin:
+                        <input class="form-control" name='institucionAfin' value="<?php echo isset($participante["institucion_afin"]) ? $participante["institucion_afin"] : '' ?>" type="text" <?php echo $existeParticipante ? 'disabled' : '' ?> />
+                    </label>
                 </div>
 
                 <div class="mb-3">
@@ -176,7 +203,7 @@ function checkDepartamento(val) {
                 <div class="mb-3">
                     <label class="form-label">Municipio:</label>
                     <select class="form-select" id = "select_municipio" name="municipio" <?php echo $existeParticipante ? 'disabled' : '' ?>>
-                    <option value=''>Seleccione identidad cultural</option>
+                    <option value=''>Seleccione municipio</option>
                     <?php if (isset($participante) && isset($participante["municipio_id"])) : ?>
                         <?php foreach ($opcionesMunicipio as $key => $value) : ?>
                             <option <?php echo isset($participante) && $participante["municipio_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
@@ -185,22 +212,15 @@ function checkDepartamento(val) {
                     </select>
                 </div>
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label class="form-label">Institución a la que pertenece:</label><span class="text-danger"> * </span>
-                    <select class="form-select" onchange="checkInstitucion(this)" name="institucion" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                    <select class="form-select" onchange="checkInstitucion(this)" name="institucion" <?php //echo $existeParticipante ? 'disabled' : '' ?>>
                         <option value=''>Seleccione institución</option>
-                        <?php foreach ($opcionesInstitucion as $key => $value) : ?>
-                            <option <?php echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
-                        <?php endforeach; ?>
+                        <?php //foreach ($opcionesInstitucion as $key => $value) : ?>
+                            <option <?php //echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php //echo htmlentities($key); ?>"><?php //echo htmlentities($value); ?></option>
+                        <?php //endforeach; ?>
                     </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label" id='institucionAfin' style="display: none">
-                        Institucion Afin:
-                        <input class="form-control" name='institucionAfin' value="<?php echo isset($participante["institucion_afin"]) ? $participante["institucion_afin"] : '' ?>" type="text" <?php echo $existeParticipante ? 'disabled' : '' ?> />
-                    </label>
-                </div>
+                </div> -->
 
                 <div class="mb-3">
                     <label class="form-label">Grupo Objetivo:</label><span class="text-danger"> * </span>
@@ -294,7 +314,7 @@ function checkDepartamento(val) {
                         if (trim($_POST[$key]) === '') {
                             if (
                                 $key == 'p_nombre' || $key == 'p_apellido' || $key == 'sexo' || $key == 'institucion'
-                                || $key == 'grupoObjetivo' || $key == 'correo' || $key == 'celular' || $key == 'FADN'
+                                || $key == 'grupoObjetivo' || $key == 'correo' || $key == 'celular'
                             ) {
                                 $campoFaltante = true;
                             }
