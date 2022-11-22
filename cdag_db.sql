@@ -687,7 +687,7 @@ CREATE TABLE `participante` (
   `institucion_id` int(11) NOT NULL,
   `grupo_objetivo_id` int(11) NOT NULL,
   `correo_electronico` varchar(250) NOT NULL,
-  `celular` varchar(8) NOT NULL,
+  `celular` varchar(15) NOT NULL,
   `FADN_id` int(11) DEFAULT NULL,
   `municipio_id` int(11) DEFAULT NULL,
   `fecha_nacimiento` date DEFAULT NULL,
