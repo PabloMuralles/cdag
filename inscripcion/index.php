@@ -28,6 +28,16 @@ function checkDepartamento(val) {
 
 </script>
 
+<?php	
+    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $parts = parse_url( $url );
+    parse_str( $parts['query'], $query );
+    $evento_id = $query['id'];
+
+?>
+
+ 
+
 <html>
 
 <head>
@@ -84,6 +94,9 @@ function checkDepartamento(val) {
             Datos registrados:
         </h3>
     </div>
+
+
+    
 
 
     <?php if (isset($_GET['CUI']) && ($_GET['CUI'] != "")) : ?>
@@ -152,16 +165,6 @@ function checkDepartamento(val) {
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Institución a la que pertenece:</label><span class="text-danger"> * </span>
-                    <select class="form-select" onchange="checkInstitucion(this)" name="institucion" <?php echo $existeParticipante ? 'disabled' : '' ?>>
-                        <option value=''>Seleccione institución</option>
-                        <?php foreach ($opcionesInstitucion as $key => $value) : ?>
-                            <option <?php echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="mb-3">
                     <label class="form-label">Seleccione FADN o Deporte:</label><span class="text-danger"> * </span>
                     <select class="form-select" name="FADN" <?php echo $existeParticipante ? 'disabled' : '' ?>>
                         <option value=''>Seleccione FADN o Deporte</option>
@@ -192,6 +195,16 @@ function checkDepartamento(val) {
                             <option <?php echo isset($participante) && $participante["municipio_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
                         <?php endforeach; ?>
                     <?php endif ?>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Institución a la que pertenece:</label><span class="text-danger"> * </span>
+                    <select class="form-select" onchange="checkInstitucion(this)" name="institucion" <?php echo $existeParticipante ? 'disabled' : '' ?>>
+                        <option value=''>Seleccione institución</option>
+                        <?php foreach ($opcionesInstitucion as $key => $value) : ?>
+                            <option <?php echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php echo htmlentities($key); ?>"><?php echo htmlentities($value); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -253,44 +266,25 @@ function checkDepartamento(val) {
                 </div>
 
                 <div>
-                    <input class="btn btn-primary" type="submit" name="accion" value="Guardar Cambios">
+                    <!-- <input class="btn btn-primary" type="submit" name="accion" value="Guardar Cambios"> -->
                     <input class="btn btn-primary" type="submit" name="accion" value="Inscribirse">
                 </div>
 
             </div>
         </form>
+
         <?php
-        if (!empty($_POST) && isset($_POST["accion"])) {
+        if (!empty($_POST) && isset($_POST["accion"])) 
+        {
             $participanteInscrito = $metadata->getParticipante($_GET['CUI']);
-            if ($_POST["accion"] == "Inscribirse") {
-                $eventoInscrito = $metadata->getEvento($_GET["id"]);
-                if (isset($participanteInscrito) && isset($eventoInscrito)) {
-                    // Inscripcion
-                    $participanteId = $participanteInscrito["id"];
-                    $eventoId = $eventoInscrito["id"];
-                    $registroInscripcion = $metadata->getRegistro($participanteId, $eventoId);
-                    if (!empty($registroInscripcion)) {
-                        echo "<script> alert('Ya se encuentra inscrito');
-                                window.location.href = 'msg/confirmacion.php';
-                                </script>";
-                    } else {
-                        $insertado = $metadata->setInscripcion($participanteId, $eventoId);
-                        if ($insertado != 0) {
-                            echo "<script> alert('Se ha inscrito correctamente');
-                                    window.location.href = 'msg/confirmacion.php';
-                                    </script>";
-                        } else {
-                            echo "<script> alert('Se ha presentado un error, intente de nuevo');";
-                        }
-                    }
-                } else {
-                    echo "<script> alert('No se encontrado el evento y/o al participante');";
-                }
-            } else {
-                //Guardar cambios
-                if (empty($participanteInscrito)) {
+            if ($_POST["accion"] == "Inscribirse" )
+            {
+
+                if (empty($participanteInscrito))
+                {
                     $campoFaltante = false;
-                    foreach ($_POST as $key => $value) {
+                    foreach ($_POST as $key => $value)
+                    {
                         if (trim($_POST[$key]) === '') {
                             if (
                                 $key == 'p_nombre' || $key == 'p_apellido' || $key == 'sexo' || $key == 'institucion'
@@ -305,9 +299,12 @@ function checkDepartamento(val) {
                             $_POST[$key] = "'" . trim($_POST[$key]) . "'";
                         }
                     }
-                    if ($campoFaltante) {
+                    if ($campoFaltante)
+                    {
                         echo "<script> alert('Revise los campos requeridos'); </script>";
-                    } else {
+                    }
+                    else
+                    {
                         $insertado = $metadata->setParticipante(
                             $_GET["CUI"],
                             $_POST["p_nombre"],
@@ -328,15 +325,58 @@ function checkDepartamento(val) {
                             $_POST["institucionAfin"]
                         );
                         if ($insertado != 0) {
-                            echo "<script> alert('Se ha guardado los datos del participante');
-                            window.location.href = 'index.php?id=" . $_GET["id"] . "&CUI=" . $_GET["CUI"] . "';</script>";
+                            $participanteId = $insertado;
+                            $eventoId = $evento_id;
+                            $registroInscripcion = $metadata->getRegistro($participanteId, $eventoId);
+                            if (!empty($registroInscripcion)) {
+                                echo "<script> alert('Ya se encuentra inscrito');
+                                        window.location.href = 'msg/confirmacion.php';
+                                        </script>";
+                            } else {
+                                $insertado = $metadata->setInscripcion($participanteId, $eventoId);
+                                if ($insertado != 0) {
+                                    echo "<script> alert('Se ha inscrito correctamente');
+                                            window.location.href = 'msg/confirmacion.php';
+                                            </script>";
+                                } else {
+                                    echo "<script> alert('Se ha presentado un error, intente de nuevo');";
+                                }
+                            }
+                     
                         } else {
                             echo "<script> alert('Se ha presentado un error, intente de nuevo');</script>";
                         }
                     }
-                } else {
-                    echo "<script> alert('El participante ya se encuentra registrado en la db');</script>";
                 }
+                else
+                {
+                    $eventoInscrito = $metadata->getEvento($_GET["id"]);
+                    if (isset($participanteInscrito) && isset($eventoInscrito))
+                    {
+                        // Inscripcion
+                        $participanteId = $participanteInscrito["id"];
+                        $eventoId = $eventoInscrito["id"];
+                        $registroInscripcion = $metadata->getRegistro($participanteId, $eventoId);
+                        if (!empty($registroInscripcion)) {
+                            echo "<script> alert('Ya se encuentra inscrito');
+                                    window.location.href = 'msg/confirmacion.php';
+                                    </script>";
+                        } else {
+                            $insertado = $metadata->setInscripcion($participanteId, $eventoId);
+                            if ($insertado != 0) {
+                                echo "<script> alert('Se ha inscrito correctamente');
+                                        window.location.href = 'msg/confirmacion.php';
+                                        </script>";
+                            } else {
+                                echo "<script> alert('Se ha presentado un error, intente de nuevo');";
+                            }
+                        }
+                    } else {
+                        echo "<script> alert('No se encontrado el evento y/o al participante');";
+                    }
+
+                }
+               
             }
         }
         ?>
