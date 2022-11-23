@@ -123,7 +123,7 @@ function checkDepartamento(val) {
         if (!$existeParticipante) {
             echo "<div class='container pt-3'>";
             echo "<p class='text-danger'>** CUI no encontrado en nuestra base de datos, valide si el dato fue ingresado sin guiones y sin espacios **</p>";
-            echo "<p class='text-danger'>** En caso de que el CUI este correcto, por favor llenar datos y presionar dar click en \"Guardar Cambios\" y luego dar click en \"Inscribirse\" **</p>";
+            echo "<p class='text-danger'>** En caso de que el CUI este correcto, por favor llenar datos y dar click en \"Inscribirse\" **</p>";
             echo "<span class='text-danger'>* Campo requerido</span>";
             echo "</div>";
         }
