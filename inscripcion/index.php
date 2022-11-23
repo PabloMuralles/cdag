@@ -44,8 +44,6 @@ function checkDepartamento(val) {
 
 ?>
 
- 
-
 <html>
 
 <head>
@@ -102,10 +100,6 @@ function checkDepartamento(val) {
             Datos registrados:
         </h3>
     </div>
-
-
-    
-
 
     <?php if (isset($_GET['CUI']) && ($_GET['CUI'] != "")) : ?>
         <!-- Declaracion de opciones -->
@@ -227,16 +221,6 @@ function checkDepartamento(val) {
                     </select>
                 </div>
 
-                <!-- <div class="mb-3">
-                    <label class="form-label">Institución a la que pertenece:</label><span class="text-danger"> * </span>
-                    <select class="form-select" onchange="checkInstitucion(this)" name="institucion" <?php //echo $existeParticipante ? 'disabled' : '' ?>>
-                        <option value=''>Seleccione institución</option>
-                        <?php //foreach ($opcionesInstitucion as $key => $value) : ?>
-                            <option <?php //echo isset($participante) && $participante["institucion_id"] == $key ? 'selected="selected"' : '' ?> value="<?php //echo htmlentities($key); ?>"><?php //echo htmlentities($value); ?></option>
-                        <?php //endforeach; ?>
-                    </select>
-                </div> -->
-
                 <div class="mb-3">
                     <label class="form-label">Grupo Objetivo:</label><span class="text-danger"> * </span>
                     <select class="form-select" name="grupoObjetivo" <?php echo $existeParticipante ? 'disabled' : '' ?>>
@@ -288,7 +272,6 @@ function checkDepartamento(val) {
                 </div>
 
                 <div>
-                    <!-- <input class="btn btn-primary" type="submit" name="accion" value="Guardar Cambios"> -->
                     <input class="btn btn-primary" type="submit" name="accion" value="Inscribirse">
                 </div>
 
@@ -357,7 +340,7 @@ function checkDepartamento(val) {
                             } else {
                                 $insertado = $metadata->setInscripcion($participanteId, $eventoId);
                                 if ($insertado != 0) {
-                                    echo "<script> alert('Se ha inscrito correctamente');
+                                    echo "<script>
                                             window.location.href = 'msg/confirmacion.php';
                                             </script>";
                                 } else {
@@ -386,7 +369,7 @@ function checkDepartamento(val) {
                         } else {
                             $insertado = $metadata->setInscripcion($participanteId, $eventoId);
                             if ($insertado != 0) {
-                                echo "<script> alert('Se ha inscrito correctamente');
+                                echo "<script> 
                                         window.location.href = 'msg/confirmacion.php';
                                         </script>";
                             } else {
