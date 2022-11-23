@@ -9,5 +9,5 @@
 ### System Environment / Requirements
 
 - Works with PHP 7.0+ (https://www.php.net/)
-- MySQL 5.0.3+ (https://www.mysql.com/)
+- MySQL 10.4.25-MariaDB  (https://mariadb.org/)
 
